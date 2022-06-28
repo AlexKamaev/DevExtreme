@@ -2,6 +2,7 @@ import $ from 'jquery';
 import typeUtils from 'core/utils/type';
 import executeAsyncMock from '../../../helpers/executeAsyncMock.js';
 import keyboardMock from '../../../helpers/keyboardMock.js';
+import { get } from '../../../helpers/shadowDOM.js';
 import { DataSource } from 'data/data_source/data_source';
 import ArrayStore from 'data/array_store';
 
@@ -18,7 +19,7 @@ QUnit.module('flat index');
 QUnit.test('index should be correct for plain list', function(assert) {
     const items = [{ a: 0 }, { a: 1 }];
 
-    const $list = $('#templated-list').dxList({
+    const $list = get('#templated-list').dxList({
         items: items
     });
     const list = $list.dxList('instance');
@@ -42,7 +43,7 @@ QUnit.test('index should be correct for grouped list', function(assert) {
         }
     ];
 
-    const $list = $('#templated-list').dxList({
+    const $list = get('#templated-list').dxList({
         items: items,
         grouped: true
     });
@@ -67,7 +68,7 @@ QUnit.test('it should be possible to select an item in the grouped list by primi
         }
     ];
 
-    const $list = $('#templated-list').dxList({
+    const $list = get('#templated-list').dxList({
         items: items,
         selectionMode: 'single',
         selectedIndex: 2,
@@ -90,7 +91,7 @@ QUnit.test('it should be possible to select an item in the grouped list by primi
 QUnit.test('item should be correct for plain list', function(assert) {
     const items = [{ a: 0 }, { a: 1 }];
 
-    const $list = $('#templated-list').dxList({
+    const $list = get('#templated-list').dxList({
         items: items
     });
     const list = $list.dxList('instance');
@@ -113,7 +114,7 @@ QUnit.test('index should be correct for grouped list', function(assert) {
         }
     ];
 
-    const $list = $('#templated-list').dxList({
+    const $list = get('#templated-list').dxList({
         items: items,
         grouped: true
     });
@@ -127,7 +128,7 @@ QUnit.test('index should be correct for grouped list', function(assert) {
 
 QUnit.test('it should be possible to select an item with index bigger then 255 in the grouped list (T996851)', function(assert) {
     let selectedIndex;
-    const list = $('#list').dxList({
+    const list = get('#list').dxList({
         dataSource: [{
             key: 'someKey',
             items: [...Array(300).keys()]
@@ -145,7 +146,7 @@ QUnit.test('it should be possible to select an item with index bigger then 255 i
 });
 
 QUnit.test('deleteItem should remove an item', function(assert) {
-    const $list = $('#templated-list').dxList({
+    const $list = get('#templated-list').dxList({
         items: [1, 2, 3, 4],
         allowItemDeleting: true
     });
@@ -162,7 +163,7 @@ QUnit.test('deleteItem should remove an item', function(assert) {
 
 QUnit.test('deferred deleteItem should correctly update cached items after item removing', function(assert) {
     let deferred;
-    const $list = $('#templated-list').dxList({
+    const $list = get('#templated-list').dxList({
         items: [1, 2, 3, 4],
         onItemDeleting: function(e) {
             deferred = $.Deferred();
@@ -220,7 +221,7 @@ const groupedListData = {
 QUnit.module('deleting in grouped list');
 
 QUnit.test('deleteItem should remove item by node', function(assert) {
-    const $list = $('#templated-list').dxList({
+    const $list = get('#templated-list').dxList({
         items: groupedListData.data,
         grouped: true,
         editEnabled: true
@@ -235,7 +236,7 @@ QUnit.test('deleteItem should remove item by node', function(assert) {
 });
 
 QUnit.test('deleteItem should remove item by index', function(assert) {
-    const $list = $('#templated-list').dxList({
+    const $list = get('#templated-list').dxList({
         items: groupedListData.data,
         grouped: true,
         editEnabled: true
@@ -259,7 +260,7 @@ QUnit.module('keyboard navigation', {
 QUnit.test('item deletion by keyboard', function(assert) {
     const items = ['1', '2', '3'];
 
-    const $list = $('#list').dxList({
+    const $list = get('#list').dxList({
         items: items,
         editEnabled: true,
         allowItemDeleting: false,
@@ -285,7 +286,7 @@ QUnit.test('item deletion by keyboard', function(assert) {
 QUnit.test('items reordering by keyboard', function(assert) {
     const items = ['1', '2', '3'];
 
-    const $list = $('#list').dxList({
+    const $list = get('#list').dxList({
         items: items,
         editEnabled: true,
         itemDragging: {
@@ -332,7 +333,7 @@ QUnit.test('deleteItem shouldn\'t load data', function(assert) {
         pageSize: 1
     });
 
-    const $list = $('#list').height(60).dxList({
+    const $list = get('#list').height(60).dxList({
         dataSource: dataSource,
         grouped: true,
         editEnabled: true
@@ -357,7 +358,7 @@ QUnit.test('selectAll/unselectAll for \'page\' selectAllMode', function(assert) 
         paginate: true
     });
 
-    const $element = $('#list').dxList({
+    const $element = get('#list').dxList({
         dataSource: ds,
         pageLoadMode: 'nextButton',
         selectionMode: 'multiple',
@@ -388,7 +389,7 @@ QUnit.test('selectAll/unselectAll for \'allPages\' selectAllMode', function(asse
         paginate: true
     });
 
-    const $element = $('#list').dxList({
+    const $element = get('#list').dxList({
         dataSource: ds,
         selectionMode: 'multiple',
         selectAllMode: 'allPages'
@@ -410,7 +411,7 @@ QUnit.test('selectAll/unselectAll for \'allPages\' selectAllMode', function(asse
 
 QUnit.test('unselectAll method should not unselect disabled items  (T1050340)', function(assert) {
     const items = [{ text: '1', disabled: true }, { text: '2' }];
-    const instance = $('#list').dxList({
+    const instance = get('#list').dxList({
         dataSource: items,
         selectedItemKeys: ['1', '2'],
         selectionMode: 'all',
@@ -432,7 +433,7 @@ QUnit.test('selectAllMode option changed to \'allPages\'', function(assert) {
         pageSize: 2,
         paginate: true
     });
-    const $element = $('#list').dxList({
+    const $element = get('#list').dxList({
         dataSource: ds,
         selectionMode: 'multiple',
         selectAllMode: 'page'
@@ -456,7 +457,7 @@ QUnit.test('selectAllMode option changed to \'page\'', function(assert) {
         pageSize: 2,
         paginate: true
     });
-    const $element = $('#list').dxList({
+    const $element = get('#list').dxList({
         dataSource: ds,
         selectionMode: 'multiple',
         selectAllMode: 'allPages'
@@ -479,7 +480,7 @@ QUnit.test('selectAllMode option changed twice', function(assert) {
         pageSize: 2,
         paginate: true
     });
-    const $element = $('#list').dxList({
+    const $element = get('#list').dxList({
         dataSource: ds,
         selectionMode: 'multiple',
         selectAllMode: 'page'
@@ -505,7 +506,7 @@ QUnit.test('unselectItem for last item if \'allPages\' selectAllMode', function(
     });
     ds.store().on('loading', loading);
 
-    const $element = $('#list').dxList({
+    const $element = get('#list').dxList({
         selectedItems: [1],
         dataSource: ds,
         pageLoadMode: 'nextButton',
@@ -539,7 +540,7 @@ QUnit.test('change selectedItemKeys to invisible items should perform load with 
         paginate: true
     });
 
-    const $element = $('#list').dxList({
+    const $element = get('#list').dxList({
         dataSource: ds,
         selectionMode: 'multiple'
     });
@@ -565,7 +566,7 @@ QUnit.test('selectedItems should not be removed if items won\'t loaded', functio
         paginate: true
     });
 
-    const $element = $('#list').dxList({
+    const $element = get('#list').dxList({
         dataSource: ds,
         pageLoadMode: 'nextButton',
         selectedItems: items.slice(),
@@ -584,7 +585,7 @@ QUnit.test('selectedItems should be cleaned after pulldown', function(assert) {
         paginate: true
     });
 
-    const $element = $('#list').dxList({
+    const $element = get('#list').dxList({
         pullRefreshEnabled: true,
         dataSource: ds,
         selectedItems: items.slice(),
@@ -598,7 +599,7 @@ QUnit.test('selectedItems should be cleaned after pulldown', function(assert) {
 QUnit.test('selectedItems should not be cleaned after reordering if store key specified', function(assert) {
     const items = [{ id: 1, text: '1' }, { id: 2, text: '2' }, { id: 3, text: '3' }];
 
-    const listInstance = $('#list').dxList({
+    const listInstance = get('#list').dxList({
         dataSource: new ArrayStore({
             key: 'id',
             data: items
@@ -608,22 +609,22 @@ QUnit.test('selectedItems should not be cleaned after reordering if store key sp
 
     listInstance.selectItem(0);
 
-    const item0 = $('#list').find(toSelector(LIST_ITEM_CLASS)).eq(0).get(0);
-    const item1 = $('#list').find(toSelector(LIST_ITEM_CLASS)).eq(1).get(0);
+    const item0 = get('#list').find(toSelector(LIST_ITEM_CLASS)).eq(0).get(0);
+    const item1 = get('#list').find(toSelector(LIST_ITEM_CLASS)).eq(1).get(0);
 
     listInstance.reorderItem(item0, item1);
     assert.equal(listInstance.option('selectedItems')[0], items[0], 'first item is selected');
 });
 
 QUnit.test('reorderItem method should return a Promise', function(assert) {
-    const listInstance = $('#list').dxList({
+    const listInstance = get('#list').dxList({
         dataSource: [1, 2, 3]
     }).dxList('instance');
 
     listInstance.selectItem(0);
 
     const promise = listInstance.reorderItem(0, 1);
-    const $items = $('#list').find(toSelector(LIST_ITEM_CLASS));
+    const $items = get('#list').find(toSelector(LIST_ITEM_CLASS));
     const firstItemText = $items.eq(0).text();
     const secondItemText = $items.eq(1).text();
 
@@ -637,7 +638,7 @@ QUnit.test('selection works well after clean all selected items and selectAllMod
     const items = [1, 2, 3];
     const selectionChangedSpy = sinon.spy();
 
-    const listInstance = $('#list').dxList({
+    const listInstance = get('#list').dxList({
         dataSource: new ArrayStore({
             key: 'id',
             data: items
@@ -661,7 +662,7 @@ QUnit.test('Selecting all filtered items when selectAllMode is \'allPages\'', fu
     const items = [1, 2, 3, 4, 5];
     let $selectAll;
 
-    const instance = $('#list').dxList({
+    const instance = get('#list').dxList({
         dataSource: {
             store: items,
             pageSize: 2,
@@ -677,7 +678,7 @@ QUnit.test('Selecting all filtered items when selectAllMode is \'allPages\'', fu
     instance.selectItem(0);
 
     // assert
-    $selectAll = $('#list').find('.dx-list-select-all-checkbox');
+    $selectAll = get('#list').find('.dx-list-select-all-checkbox');
     assert.ok($selectAll.hasClass('dx-checkbox-checked'), 'selectAll checkbox is checked');
     assert.deepEqual(instance.option('selectedItems'), [1], 'selected items');
 
@@ -685,7 +686,7 @@ QUnit.test('Selecting all filtered items when selectAllMode is \'allPages\'', fu
     instance.option('searchValue', '');
 
     // assert
-    $selectAll = $('#list').find('.dx-list-select-all-checkbox');
+    $selectAll = get('#list').find('.dx-list-select-all-checkbox');
     assert.ok($selectAll.hasClass('dx-checkbox-indeterminate'), 'selectAll checkbox is indeterminate');
 });
 
@@ -733,7 +734,7 @@ QUnit.module('selecting in grouped list', {
 const LIST_GROUP_CLASS = 'dx-list-group';
 
 QUnit.test('selectItem by node should add item to selectedItems', function(assert) {
-    const $list = $('#templated-list').dxList({
+    const $list = get('#templated-list').dxList({
         items: this.data,
         grouped: true,
         editEnabled: true,
@@ -757,7 +758,7 @@ QUnit.test('selectItem by node should add item to selectedItems', function(asser
 });
 
 QUnit.test('selectItem by index should add item to selectedItems', function(assert) {
-    const $list = $('#templated-list').dxList({
+    const $list = get('#templated-list').dxList({
         items: this.data,
         grouped: true,
         editEnabled: true,
@@ -779,7 +780,7 @@ QUnit.test('selectItem by index should add item to selectedItems', function(asse
 });
 
 QUnit.test('selectItem by itemData should add item to selectedItems', function(assert) {
-    const $list = $('#templated-list').dxList({
+    const $list = get('#templated-list').dxList({
         items: this.data,
         grouped: true,
         editEnabled: true,
@@ -802,7 +803,7 @@ QUnit.test('selectItem by itemData should add item to selectedItems', function(a
 });
 
 QUnit.test('selectItem by itemElement should add item to selectedItems', function(assert) {
-    const $list = $('#templated-list').dxList({
+    const $list = get('#templated-list').dxList({
         items: this.data,
         grouped: true,
         editEnabled: true,
@@ -815,7 +816,7 @@ QUnit.test('selectItem by itemElement should add item to selectedItems', functio
 });
 
 QUnit.test('unselectItem should remove item from selectedItems', function(assert) {
-    const $list = $('#templated-list').dxList({
+    const $list = get('#templated-list').dxList({
         items: this.data,
         grouped: true,
         editEnabled: true,
@@ -852,7 +853,7 @@ QUnit.test('isItemSelected should reflect current item state', function(assert) 
         }
     ];
 
-    const $list = $('#templated-list').dxList({
+    const $list = get('#templated-list').dxList({
         items: data,
         grouped: true,
         editEnabled: true,
@@ -870,7 +871,7 @@ QUnit.test('isItemSelected should reflect current item state', function(assert) 
 });
 
 QUnit.test('selection should be same when list refresh', function(assert) {
-    const $list = $('#templated-list').dxList({
+    const $list = get('#templated-list').dxList({
         items: this.data,
         grouped: true,
         editEnabled: true,
@@ -897,7 +898,7 @@ QUnit.test('selection should be same when list refresh', function(assert) {
 });
 
 QUnit.test('selection should be cleared after grouped option is changed', function(assert) {
-    const $list = $('#templated-list').dxList({
+    const $list = get('#templated-list').dxList({
         items: this.data,
         grouped: true,
         editEnabled: true,
@@ -939,7 +940,7 @@ QUnit.test('deleteItem should change selected items', function(assert) {
     ];
 
 
-    const $list = $('#templated-list').dxList({
+    const $list = get('#templated-list').dxList({
         items: this.data,
         grouped: true,
         editEnabled: true,
@@ -968,7 +969,7 @@ QUnit.test('deleteItem should change selected items', function(assert) {
 });
 
 QUnit.test('item should be selectable by click on it in the grouped list', function(assert) {
-    const list = $('#templated-list').dxList({
+    const list = get('#templated-list').dxList({
         items: [
             { key: 'first', items: [{ text: 'item 1' }] }
         ],
@@ -1031,7 +1032,7 @@ QUnit.test('selectedItem should select only one item', function(assert) {
         }
     ];
 
-    const $list = $('#templated-list').dxList({
+    const $list = get('#templated-list').dxList({
         items: this.data,
         grouped: true,
         editEnabled: true,
@@ -1061,7 +1062,7 @@ QUnit.test('selectedItems should accept only one item', function(assert) {
         }
     ];
 
-    const $list = $('#templated-list').dxList({
+    const $list = get('#templated-list').dxList({
         items: this.data,
         grouped: true,
         editEnabled: true,
@@ -1091,7 +1092,7 @@ QUnit.test('selection should hold selection after dataSource filtering (T474406)
         searchExpr: 'text'
     });
 
-    const $list = $('#templated-list').dxList({
+    const $list = get('#templated-list').dxList({
         dataSource: dataSource,
         grouped: true,
         keyExpr: 'text',
@@ -1144,7 +1145,7 @@ QUnit.module('reordering in grouped items', {
 });
 
 QUnit.test('reorderItem should swap items by node', function(assert) {
-    const $list = $('#templated-list').dxList({
+    const $list = get('#templated-list').dxList({
         items: this.data,
         grouped: true,
         editEnabled: true
@@ -1167,7 +1168,7 @@ QUnit.test('reorderItem should swap items by node', function(assert) {
 });
 
 QUnit.test('reorderItem should swap items by index', function(assert) {
-    const $list = $('#templated-list').dxList({
+    const $list = get('#templated-list').dxList({
         items: this.data,
         grouped: true,
         editEnabled: true
@@ -1192,7 +1193,7 @@ QUnit.test('reorderItem should swap items by index', function(assert) {
 });
 
 QUnit.test('reorderItem should swap items by node within one group', function(assert) {
-    const $list = $('#templated-list').dxList({
+    const $list = get('#templated-list').dxList({
         items: this.data,
         grouped: true,
         editEnabled: true
@@ -1215,7 +1216,7 @@ QUnit.test('reorderItem should swap items by node within one group', function(as
 });
 
 QUnit.test('reorderItem should swap last with first items in items option', function(assert) {
-    const $list = $('#templated-list').dxList({
+    const $list = get('#templated-list').dxList({
         items: this.data,
         grouped: true,
         editEnabled: true
@@ -1227,7 +1228,7 @@ QUnit.test('reorderItem should swap last with first items in items option', func
 });
 
 QUnit.test('onItemReordered should be fired if items reordered', function(assert) {
-    const $list = $('#templated-list').dxList({
+    const $list = get('#templated-list').dxList({
         items: this.data,
         grouped: true,
         editEnabled: true,
@@ -1255,7 +1256,7 @@ QUnit.test('selection should be updated after items reordered', function(assert)
         }
     ];
 
-    const $list = $('#templated-list').dxList({
+    const $list = get('#templated-list').dxList({
         items: this.data,
         grouped: true,
         selectedItems: [

@@ -5,9 +5,9 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" type="text/css" href="../artifacts/css/dx.light.css"/>
+    <link rel="stylesheet" type="text/css" href="http://localhost:8081/artifacts/css/dx.light.css"/>
 
-    <script type="text/javascript" src="../artifacts/js/jquery.js"></script>
+<!--    <script type="text/javascript" src="../artifacts/js/jquery.js"></script>-->
     <!-- HtmlEditor -->
     <!-- <script type="text/javascript" src="../artifacts/js/dx-quill.min.js"></script> -->
 
@@ -31,15 +31,376 @@
 
     <script type="text/javascript" src="../artifacts/js/dx.all.debug.js" charset="utf-8"></script>
 </head>
-<body>
-    <div id="button"></div>
-    <script>
-        $(function() {
-            $("#button").dxButton({
-                text: 'Click me!',
-                onClick: function() { alert("clicked"); }
-            });
+<body style="width: 200px;">
+<input type="text"/>
+<div id="button"></div>
+<div id="autocomplete"></div>
+<div id="datebox"></div>
+<div id="gallery"></div>
+<div id="list"></div>
+<div id="numberbox"></div>
+<div id="maskbox"></div>
+
+<a id="link">details</a>
+<div id="popover"> Make final decision on whether we are going to increase our Google AdWord spend based on our 2013 marketing plan. </div>
+
+<input type="text"/>
+<p id="shadow-root"></p>
+<script>
+    // $(function() {
+    //     $("#button").dxButton({
+    //         text: 'Click me!',
+    //         onClick: function() { alert("clicked"); }
+    //     });
+    // });
+    //
+    // new DevExpress.ui['dxButton'](document.querySelector('#button'), {
+    //     text: 'Click 1!',
+    //     onClick: function() { alert("click 1"); }
+    // });
+
+    const root = document.querySelector('#shadow-root');
+
+    root.attachShadow({ mode: 'open' });
+
+    const childContainer1    = document.createElement('div');
+    const childContainer2    = document.createElement('div');
+    const checkbox           = document.createElement('div');
+    const shadowHTMLBtn      = document.createElement('button');
+    const autoCompleteShadow = document.createElement('div');
+    const actionSheetShadow  = document.createElement('div');
+    const dropDownShadow     = document.createElement('div');
+    const colorBoxShadow     = document.createElement('div');
+    const dateBox            = document.createElement('div');
+    const gallery            = document.createElement('div');
+    const list               = document.createElement('div');
+    const numberbox          = document.createElement('div');
+    const popover            = document.createElement('div');
+    const popoverLink        = document.createElement('a');
+    const slider             = document.createElement('div');
+    const dxswitch           = document.createElement('div');
+    const maskbox            = document.createElement('div');
+
+    popover.innerHTML     = 'popover content';
+    popoverLink.innerHTML = 'click me';
+
+
+
+    childContainer1.id       = 'shadow-button';
+    childContainer2.id       = 'shadow-button-non-jquery';
+    childContainer1.tabIndex = 0;
+    childContainer2.tabIndex = 1;
+
+    shadowHTMLBtn.innerText = 'Basic button';
+
+    // root.shadowRoot.innerHTML += '<link rel="stylesheet" type="text/css" href="C:\\Projects\\DevExtreme\\playground\\react\\src\\artifacts\\css\\dx.light.css"/>';
+    //
+    // root.shadowRoot.appendChild(childContainer1);
+    // root.shadowRoot.appendChild(document.createElement('input'));
+    root.shadowRoot.appendChild(childContainer2);
+    // root.shadowRoot.appendChild(document.createElement('input'));
+    // root.shadowRoot.appendChild(shadowHTMLBtn);
+    root.shadowRoot.appendChild(checkbox);
+    root.shadowRoot.appendChild(autoCompleteShadow);
+    root.shadowRoot.appendChild(actionSheetShadow);
+    root.shadowRoot.appendChild(dropDownShadow);
+    // root.shadowRoot.appendChild(colorBoxShadow);
+    root.shadowRoot.appendChild(dateBox);
+    root.shadowRoot.appendChild(gallery);
+    root.shadowRoot.appendChild(list);
+    root.shadowRoot.appendChild(numberbox);
+    root.shadowRoot.appendChild(popover);
+    root.shadowRoot.appendChild(popoverLink);
+    root.shadowRoot.appendChild(slider);
+    root.shadowRoot.appendChild(dxswitch);
+    root.shadowRoot.appendChild(maskbox);
+
+
+    // $(childContainer1).dxButton({
+    //     text:    'Click shadow!',
+    //     onClick: function() {
+    //         alert('clicked shadow');
+    //     }
+    // });
+
+    new DevExpress.ui['dxButton'](childContainer2, {
+        text:    'Shadow 2!',
+        onClick: function() {
+            alert('shadow 2');
+        }
+    });
+
+    new DevExpress.ui['dxCheckBox'](checkbox, {
+        text:    'checkbox!',
+        onClick: function() {
+            alert('shadow 2');
+        }
+    });
+
+    // $(shadowHTMLBtn).focusin(event => {
+    //     event.target.style.outline = '5px solid red';
+    // });
+
+    // shadowHTMLBtn.addEventListener('focusin', event => {
+    //     event.target.style.outline = '5px solid red';
+    // });
+
+    const names = ['James', 'John', 'Robert', 'Michael', 'William', 'David', 'Richard', 'Charles', 'Joseph', 'Thomas', 'Christopher', 'Daniel', 'Paul', 'Mark', 'Donald', 'George', 'Kenneth', 'Steven', 'Edward', 'Brian', 'Ronald', 'Anthony', 'Kevin', 'Jason', 'Jeff', 'Mary', 'Patricia', 'Linda', 'Barbara', 'Elizabeth', 'Jennifer', 'Maria', 'Susan', 'Margaret', 'Dorothy', 'Lisa', 'Nancy', 'Karen', 'Betty', 'Helen', 'Sandra', 'Donna', 'Carol', 'Ruth', 'Sharon', 'Michelle', 'Laura', 'Sarah', 'Kimberly', 'Deborah'];
+
+    new DevExpress.ui['dxAutocomplete'](autoCompleteShadow, {
+        dataSource:  names,
+        placeholder: 'Type first name...'
+    });
+
+    new DevExpress.ui['dxAutocomplete'](document.querySelector('#autocomplete'), {
+        dataSource:  names,
+        placeholder: 'Type first name...'
+    });
+
+    new DevExpress.ui['dxActionSheet'](actionSheetShadow, {
+        visible:    false,
+        dataSource: [
+            { text: 'Call' },
+            { text: 'Send message' },
+            { text: 'Edit' },
+            { text: 'Delete' },
+        ],
+        title:      'Choose action',
+        onCancelClick() {
+
+        },
+        onItemClick(value) {
+
+        },
+    })
+    //
+    new DevExpress.ui['dxDropDownButton'](dropDownShadow, {
+        text:            'Download Trial',
+        icon:            'save',
+        dropDownOptions: {
+            width: 230,
+        },
+        onItemClick(e) {
+            DevExpress.ui.notify(`Download ${e.itemData}`, 'success', 600);
+        },
+        items: ['Item 1', 'Item 2', 'Item 3'],
+    });
+    //
+    // $(colorBoxShadow).dxColorBox({
+    //     value: '#f05b41',
+    // });
+    //
+    new DevExpress.ui['dxDateBox'](dateBox, {
+        type:       'date',
+        pickerType: 'rollers',
+        value:      new Date(),
+    });
+    //
+    // $('#datebox').dxDateBox({
+    //     type:       'date',
+    //     pickerType: 'rollers',
+    //     value:      new Date(),
+    // });
+
+    new DevExpress.ui['dxGallery'](gallery, {
+        dataSource: [
+            'https://media.istockphoto.com/photos/yerevan-capital-of-armenia-in-front-of-mt-ararat-picture-id1144776438',
+            'https://media.istockphoto.com/photos/remains-of-zvartnots-temple-and-mount-ararat-armenia-picture-id889725394'
+        ],
+        height: 300,
+        loop: false,
+        slideshowDelay: 2000,
+        showNavButtons: true,
+        showIndicator: true,
+    })
+
+
+    new DevExpress.ui['dxGallery'](document.querySelector('#gallery'), {
+        dataSource:     [
+            'https://media.istockphoto.com/photos/yerevan-capital-of-armenia-in-front-of-mt-ararat-picture-id1144776438',
+            'https://media.istockphoto.com/photos/remains-of-zvartnots-temple-and-mount-ararat-armenia-picture-id889725394'
+        ],
+        height:         300,
+        loop:           false,
+        slideshowDelay: 2000,
+        showNavButtons: true,
+        showIndicator:  true,
+    });
+
+    const plannedTasks = [{ id: 5, text: 'New Brochures' },
+        { id: 6, text: '2019 Brochure Designs' },
+        { id: 7, text: 'Brochure Design Review' },
+        { id: 8, text: 'Website Re-Design Plan' },
+        { id: 9, text: 'Rollout of New Website and Marketing Brochures' },
+        { id: 10, text: 'Create 2018 Sales Report' },
+        { id: 11, text: 'Direct vs Online Sales Comparison Report' },
+        { id: 12, text: 'Review 2018 Sales Report and Approve 2019 Plans' },
+        { id: 13, text: 'Submit Signed NDA' },
+        { id: 14, text: 'Update Revenue Projections' },
+        { id: 15, text: 'Review Revenue Projections' },
+        { id: 16, text: 'Comment on Revenue Projections' },
+        { id: 17, text: 'Scan Health Insurance Forms' },
+        { id: 18, text: 'Sign Health Insurance Forms' },
+        { id: 19, text: 'Follow up with West Coast Stores' },
+        { id: 20, text: 'Follow up with East Coast Stores' },
+        { id: 21, text: 'Submit Refund Report for 2019 Recall' },
+        { id: 22, text: 'Give Final Approval for Refunds' },
+        { id: 23, text: 'Prepare Product Recall Report' },
+        { id: 24, text: 'Review Product Recall Report by Engineering Team' },
+        { id: 25, text: 'Review Training Course for any Omissions' },
+        { id: 26, text: 'Review Overtime Report' },
+        { id: 27, text: 'Submit Overtime Request Forms' },
+        { id: 28, text: 'Overtime Approval Guidelines' },
+        { id: 29, text: 'Create Report on Customer Feedback' },
+        { id: 30, text: 'Review Customer Feedback Report' }];
+    //
+
+    var shadowList = true;
+
+    if (shadowList) {
+        new DevExpress.ui['dxList'](list, {
+            dataSource:         plannedTasks,
+            focusStateEnabled: true,
+            repaintChangesOnly: true,
+            keyExpr:            'id',
+            allowItemDeleting: true,
+            itemDeleteMode: 'slideItem',
+            itemDragging:       {
+                allowReordering: true,
+                data:            plannedTasks,
+                group:           'tasks',
+                onDragStart(e) {
+                    e.itemData = e.fromData[e.fromIndex];
+                },
+                onAdd(e) {
+                    e.toData.splice(e.toIndex, 0, e.itemData);
+                    e.component.reload();
+                },
+                onRemove(e) {
+                    e.fromData.splice(e.fromIndex, 1);
+                    e.component.reload();
+                },
+            }
         });
-    </script>
+    } else {
+        new DevExpress.ui['dxList'](document.querySelector('#list'), {
+            dataSource:         plannedTasks,
+            focusStateEnabled : true,
+            repaintChangesOnly: true,
+            keyExpr:            'id',
+            itemDragging:       {
+                allowReordering: true,
+                data:            plannedTasks,
+                group:           'tasks',
+                onDragStart(e) {
+                    e.itemData = e.fromData[e.fromIndex];
+                },
+                onAdd(e) {
+                    e.toData.splice(e.toIndex, 0, e.itemData);
+                    e.component.reload();
+                },
+                onRemove(e) {
+                    e.fromData.splice(e.fromIndex, 1);
+                    e.component.reload();
+                },
+            }
+        });
+    }
+
+
+    // shadowHTMLBtn.addEventListener('click', function () {
+    //     alert('button');
+    // });
+
+    // $(shadowHTMLBtn).click(function () {
+    //     alert('button');
+    // });
+
+
+
+    // $(document).on('mousedown', function() {
+    //     alert('handled');
+    // });
+    //
+    // document.addEventListener('mousedown', function() {
+    //    alert('kekeke');
+    // });
+    //
+    // // document.body.appendChild(shadowHTMLBtn)
+    // // $(shadowHTMLBtn).trigger('click');
+    //
+    // const event = new Event('mousedown', { bubbles: true, composed: true });
+    // var jQueryEvent = jQuery.Event( "mousedown", { bubbles: true, composed: true } );
+    //
+    // debugger;
+    //
+    // $(shadowHTMLBtn).trigger(jQueryEvent);
+    // // shadowHTMLBtn.dispatchEvent(event);
+
+    new DevExpress.ui['dxNumberBox'](numberbox, {
+        value: 20.5,
+        showSpinButtons: true,
+        showClearButton: true,
+        format: '$ #,##0.##',
+        value: 14500.55,
+    });
+
+
+    new DevExpress.ui['dxNumberBox'](document.querySelector('#numberbox'), {
+        value: 20.5,
+        showSpinButtons: true,
+        showClearButton: true,
+        format: '$ #,##0.##',
+        value: 14500.55,
+    });
+
+    new DevExpress.ui['dxPopover'](document.querySelector('#popover'), {
+        target: '#link',
+        showEvent: 'mouseenter',
+        hideEvent: 'mouseleave',
+        position: 'top',
+        width: 300,
+    });
+
+    new DevExpress.ui['dxPopover'](popover, {
+        target: popoverLink,
+        showEvent: 'click',
+        hideEvent: 'mouseleave',
+        position: 'top',
+        width: 300,
+    });
+
+    new DevExpress.ui['dxSlider'](slider, {
+        min: 0,
+        max: 100,
+        value: 90,
+        tooltip: {
+            enabled: true,
+            format(value) {
+                return `${value}%`;
+            },
+            showMode: 'always',
+            position: 'bottom',
+        },
+    });
+
+    debugger;
+
+    new DevExpress.ui['dxSwitch'](dxswitch, {
+        value: true,
+    });
+
+    new DevExpress.ui['dxTextBox'](document.querySelector('#maskbox'), {
+        mask: '+1 (X00) 000-0000',
+        maskRules: { X: /[02-9]/ },
+    });
+
+    new DevExpress.ui['dxTextBox'](maskbox, {
+        mask: '+1 (X00) 000-0000',
+        maskRules: { X: /[02-9]/ },
+    });
+
+
+</script>
 </body>
 </html>

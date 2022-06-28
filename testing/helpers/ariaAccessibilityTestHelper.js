@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import { isDefined } from 'core/utils/type';
 import CheckBox from 'ui/check_box';
+import { getRoot } from './shadowDOM.js';
 
 const { assert } = QUnit;
 
@@ -12,7 +13,7 @@ class ariaAccessibilityTestHelper {
         const { createWidget } = args;
 
         this.createWidget = (options = {}) => {
-            this.$widget = $('<div>').appendTo('#qunit-fixture');
+            this.$widget = $('<div>').appendTo(getRoot());
             this.widget = createWidget(this.$widget, options);
             this.isCheckBoxMode = this.widget.option('showCheckBoxesMode') === 'normal';
             this.$items = this.getItems();

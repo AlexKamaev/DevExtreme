@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 /* global jQuery */
 
+
 !function() {
 
     // compares two float/double numbers with some acceptable epsilon
@@ -166,12 +167,17 @@
             jQuery('#qunit-fixture input[type=date]').attr('type', 'hidden');
         }
 
-        jQuery('#qunit-fixture').empty();
+        const fixtureRoot = document.querySelector('#qunit-fixture');
+
+        if(fixtureRoot.shadowRoot) {
+            jQuery(fixtureRoot.shadowRoot.querySelector('div')).empty();
+        }
+
+        jQuery(fixtureRoot).empty();
     });
 })();
 
 (function checkForTimers() {
-
     QUnit.config.urlConfig.push({
         id: 'notimers',
         label: 'Check for timers',
@@ -463,6 +469,14 @@
         });
 
         log.clear();
+    });
+})();
+
+(function setupShadowDomMode() {
+    QUnit.config.urlConfig.push({
+        id: 'shadowDom',
+        label: 'Shadow DOM',
+        tooltip: 'Enabling this will test the target control inside the ShadowDOM.'
     });
 })();
 

@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import { DataSource } from 'data/data_source/data_source';
 import ArrayStore from 'data/array_store';
+import { get } from '../../../helpers/shadowDOM.js';
 
 import 'ui/list';
 
@@ -12,7 +13,7 @@ QUnit.module('live update', {
         this.itemRenderedSpy = sinon.spy();
         this.itemDeletedSpy = sinon.spy();
         this.createList = (options) => {
-            return $('#templated-list').dxList($.extend(true, {
+            return get('#templated-list').dxList($.extend(true, {
                 dataSource: {
                     paginate: false,
                     pushAggregationTimeout: 0,
@@ -113,7 +114,7 @@ QUnit.module('live update', {
     });
 
     QUnit.test('insert new group with empty items array should work correct if grouping and repaintChangesOnly (T1035520)', function(assert) {
-        const listInstance = $('#templated-list').dxList({
+        const listInstance = get('#templated-list').dxList({
             dataSource: {
                 store: {
                     type: 'array',
@@ -138,7 +139,7 @@ QUnit.module('live update', {
     });
 
     QUnit.test('insert new group should work correct if grouping and repaintChangesOnly and store has no key (T1035520)', function(assert) {
-        const listInstance = $('#templated-list').dxList({
+        const listInstance = get('#templated-list').dxList({
             dataSource: {
                 store: new ArrayStore(['1', '2'])
             },
@@ -269,7 +270,7 @@ QUnit.module('live update', {
         });
         const store = list.getDataSource().store();
 
-        const $moreButton = $('#templated-list .dx-list-next-button > .dx-button').eq(0);
+        const $moreButton = get('#templated-list .dx-list-next-button > .dx-button').eq(0);
         $moreButton.trigger('dxclick');
 
         this.itemRenderedSpy.reset();
@@ -695,7 +696,7 @@ QUnit.module('live update', {
             key: 0
         }]);
 
-        $('.dx-list-item:eq(0)').trigger('dxclick');
+        get('.dx-list-item').eq(0).trigger('dxclick');
         assert.deepEqual(list.option('selectedItemKeys'), [1]);
     });
 

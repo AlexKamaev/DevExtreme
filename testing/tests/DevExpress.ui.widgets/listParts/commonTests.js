@@ -11,6 +11,7 @@ import fx from 'animation/fx';
 import holdEvent from 'events/hold';
 import keyboardMock from '../../../helpers/keyboardMock.js';
 import pointerMock from '../../../helpers/pointerMock.js';
+import { get } from '../../../helpers/shadowDOM.js';
 import registerComponent from 'core/component_registrator';
 import swipeEvents from 'events/swipe';
 import themes from 'ui/themes';
@@ -155,7 +156,7 @@ const moduleSetup = {
     beforeEach: function() {
         executeAsyncMock.setup();
 
-        this.element = $('#list');
+        this.element = get('#list');
 
         this.originalScrollView = ScrollView;
         setScrollView(ScrollViewMock);
@@ -593,39 +594,24 @@ QUnit.module('collapsible groups', moduleSetup, () => {
         fx.off = true;
 
         const $element = this.element.dxList({
-            pageLoadMode: 'scrollBottom',
-            height: 160,
-            scrollingEnabled: true,
-            useNativeScrolling: false,
-            dataSource: {
+            pageLoadMode: 'scrollBottom', height: 160, scrollingEnabled: true, useNativeScrolling: false, dataSource: {
                 load(options) {
                     const d = $.Deferred();
                     const items = [{
-                        key: 'first',
-                        items: [{ a: 0 }, { a: 1 }, { a: 2 }]
-                    },
-                    {
-                        key: 'second',
-                        items: [{ a: 3 }, { a: 4 }, { a: 5 }]
-                    },
-                    {
-                        key: 'third',
-                        items: [{ a: 6 }, { a: 7 }, { a: 8 }]
+                        key: 'first', items: [{ a: 0 }, { a: 1 }, { a: 2 }]
+                    }, {
+                        key: 'second', items: [{ a: 3 }, { a: 4 }, { a: 5 }]
+                    }, {
+                        key: 'third', items: [{ a: 6 }, { a: 7 }, { a: 8 }]
                     }];
                     setTimeout(() => {
                         d.resolve(items.slice(options.skip, options.skip + options.take));
                     }, 50);
                     return d.promise();
-                },
-                group: 'key',
-                pageSize: 1
-            },
-            grouped: true,
-            collapsibleGroups: true,
-            groupTemplate(data) {
+                }, group: 'key', pageSize: 1
+            }, grouped: true, collapsibleGroups: true, groupTemplate(data) {
                 return $('<div>').text(data.key);
-            },
-            itemTemplate(data) {
+            }, itemTemplate(data) {
                 return $('<div>').text(data.a);
             }
         });
@@ -1126,7 +1112,7 @@ QUnit.module('options changed', moduleSetup, () => {
     });
 
     QUnit.test('dxList shouldn\'t show \'Loading\' and \'No data\' at the same time than dataSource option changed', function(assert) {
-        const $list = $('#list').dxList({ pageLoadMode: 'scrollBottom' });
+        const $list = get('#list').dxList({ pageLoadMode: 'scrollBottom' });
         const instance = $list.dxList('instance');
         const scrollView = $list.dxScrollView('instance');
 
@@ -1144,7 +1130,7 @@ QUnit.module('options changed', moduleSetup, () => {
     });
 
     QUnit.test('list should be able to change grouped option to false after dataSource option', function(assert) {
-        const $element = $('#list').dxList({
+        const $element = get('#list').dxList({
             dataSource: [{ key: 'parent', items: [{ text: 'child' }] }],
             grouped: true
         });
@@ -1161,7 +1147,7 @@ QUnit.module('options changed', moduleSetup, () => {
     });
 
     QUnit.test('list should be able to change grouped option to true after dataSource option', function(assert) {
-        const $element = $('#list').dxList({
+        const $element = get('#list').dxList({
             dataSource: [{ text: 'one' }],
             grouped: false
         });
@@ -1178,7 +1164,7 @@ QUnit.module('options changed', moduleSetup, () => {
     });
 
     QUnit.test('list should be able to change grouped option twice after dataSource option', function(assert) {
-        const $element = $('#list').dxList({
+        const $element = get('#list').dxList({
             dataSource: [{ text: 'one' }],
             grouped: false
         });
@@ -1198,7 +1184,7 @@ QUnit.module('options changed', moduleSetup, () => {
     });
 
     QUnit.test('searchEnabled option changing', function(assert) {
-        const $element = $('#list').dxList({
+        const $element = get('#list').dxList({
             dataSource: [1, 2, 3],
             searchEnabled: true
         });
@@ -1217,7 +1203,7 @@ QUnit.module('options changed', moduleSetup, () => {
     });
 
     QUnit.test('searchValue', function(assert) {
-        const $element = $('#list').dxList({
+        const $element = get('#list').dxList({
             dataSource: [1, 2, 3],
             searchExpr: 'this'
         });
@@ -1231,7 +1217,7 @@ QUnit.module('options changed', moduleSetup, () => {
     });
 
     QUnit.test('searchMode', function(assert) {
-        const $element = $('#list').dxList({
+        const $element = get('#list').dxList({
             dataSource: [1, 21, 3],
             searchExpr: 'this',
             searchValue: '1'
@@ -1248,7 +1234,7 @@ QUnit.module('options changed', moduleSetup, () => {
     });
 
     QUnit.test('searchMode equals', function(assert) {
-        const $element = $('#list').dxList({
+        const $element = get('#list').dxList({
             dataSource: [1, 11, 111],
             searchExpr: 'this',
             searchMode: 'equals',
@@ -1262,7 +1248,7 @@ QUnit.module('options changed', moduleSetup, () => {
     });
 
     QUnit.test('searchExpr', function(assert) {
-        const $element = $('#list').dxList({
+        const $element = get('#list').dxList({
             dataSource: [
                 { text: 'test1', value: '3' },
                 { text: 'test2', value: '3' },
@@ -1286,7 +1272,7 @@ QUnit.module('options changed', moduleSetup, () => {
     });
 
     QUnit.test('searchEditorOptions', function(assert) {
-        const $element = $('#list').dxList({
+        const $element = get('#list').dxList({
             dataSource: [
                 { text: 'test1', value: '3' },
                 { text: 'test2', value: '3' },
@@ -1309,7 +1295,7 @@ QUnit.module('options changed', moduleSetup, () => {
     });
 
     QUnit.test('apply list search options if dataSource set as dataSource instance', function(assert) {
-        const instance = $('#list').dxList({
+        const instance = get('#list').dxList({
             dataSource: new DataSource({
                 store: [],
                 searchExpr: 'test',
@@ -1329,7 +1315,7 @@ QUnit.module('options changed', moduleSetup, () => {
     });
 
     QUnit.test('apply dataSource options if list search options are default', function(assert) {
-        const instance = $('#list').dxList({
+        const instance = get('#list').dxList({
             dataSource: new DataSource({
                 store: [],
                 searchExpr: 'expr',
@@ -1356,7 +1342,7 @@ QUnit.module('options changed', moduleSetup, () => {
         const data1 = [{ text: 'test 1' }, { text: 'test 2' }];
         const data2 = [{ text: 'item 1' }, { text: 'item 2' }];
 
-        const instance = $('#list').dxList({
+        const instance = get('#list').dxList({
             dataSource: getDataSource(data1),
             searchExpr: 'text',
             searchValue: '2'
@@ -1370,7 +1356,7 @@ QUnit.module('options changed', moduleSetup, () => {
     });
 
     QUnit.test('showSelectionControls can be changed from false to true', function(assert) {
-        const instance = $('#list').dxList({
+        const instance = get('#list').dxList({
             items: ['text 1', 'text 2'],
             selectionMode: 'multiple',
             showSelectionControls: false
@@ -1383,7 +1369,7 @@ QUnit.module('options changed', moduleSetup, () => {
     });
 
     QUnit.test('showSelectionControls can be changed from true to false', function(assert) {
-        const instance = $('#list').dxList({
+        const instance = get('#list').dxList({
             items: ['text 1', 'text 2'],
             selectionMode: 'multiple',
             showSelectionControls: true
@@ -1396,7 +1382,7 @@ QUnit.module('options changed', moduleSetup, () => {
     });
 
     QUnit.test('showSelectionControls can be changed twice', function(assert) {
-        const instance = $('#list').dxList({
+        const instance = get('#list').dxList({
             items: ['text 1', 'text 2'],
             selectionMode: 'multiple'
         }).dxList('instance');
@@ -1409,7 +1395,7 @@ QUnit.module('options changed', moduleSetup, () => {
     });
 
     QUnit.test('selectAllText', function(assert) {
-        const $list = $('#list').dxList({
+        const $list = get('#list').dxList({
             items: ['text 1', 'text 2'],
             selectionMode: 'all',
             showSelectionControls: true
@@ -1422,7 +1408,7 @@ QUnit.module('options changed', moduleSetup, () => {
     });
 
     QUnit.test('menuItems can be added at runtime', function(assert) {
-        const $list = $('#list').dxList({
+        const $list = get('#list').dxList({
             items: ['text 1', 'text 2'],
             menuMode: 'context',
             menuItems: []
@@ -1437,7 +1423,7 @@ QUnit.module('options changed', moduleSetup, () => {
     });
 
     QUnit.test('menuItems can be changed to empty array', function(assert) {
-        const $list = $('#list').dxList({
+        const $list = get('#list').dxList({
             items: ['text 1', 'text 2'],
             menuMode: 'context',
             menuItems: [{ text: 'action' }]
@@ -1447,12 +1433,12 @@ QUnit.module('options changed', moduleSetup, () => {
         list.option('menuItems', []);
         showListContextMenu($list);
 
-        const $menuItems = $(`.${LIST_CONTEXT_MENUCONTENT_CLASS}`).find('.dx-list-item');
+        const $menuItems = get(`.${LIST_CONTEXT_MENUCONTENT_CLASS}`).find('.dx-list-item');
         assert.strictEqual($menuItems.length, 0, 'items count is correct');
     });
 
     QUnit.test('menuItems can be changed twice', function(assert) {
-        const $list = $('#list').dxList({
+        const $list = get('#list').dxList({
             items: ['text 1', 'text 2'],
             menuMode: 'context'
         });
@@ -1465,11 +1451,13 @@ QUnit.module('options changed', moduleSetup, () => {
         const $menuItems = $(`.${LIST_CONTEXT_MENUCONTENT_CLASS}`).find('.dx-list-item');
         assert.strictEqual($menuItems.length, 1, 'items count is correct');
         assert.strictEqual($menuItems.eq(0).text(), 'another action', 'item is correct');
+
+
     });
 
     QUnit.test('menuMode can be changed from context to slide at runtime', function(assert) {
         const menuItems = [{ text: 'action' }];
-        const $list = $('#list').dxList({
+        const $list = get('#list').dxList({
             items: ['text 1', 'text 2'],
             menuMode: 'context',
             menuItems
@@ -1484,7 +1472,7 @@ QUnit.module('options changed', moduleSetup, () => {
     });
 
     QUnit.test('menuMode can be changed from slide to context at runtime', function(assert) {
-        const $list = $('#list').dxList({
+        const $list = get('#list').dxList({
             items: ['text 1', 'text 2'],
             menuMode: 'slide',
             menuItems: [{ text: 'action' }]
@@ -1499,7 +1487,7 @@ QUnit.module('options changed', moduleSetup, () => {
     });
 
     QUnit.test('menuMode can be changed twice', function(assert) {
-        const $list = $('#list').dxList({
+        const $list = get('#list').dxList({
             items: ['text 1', 'text 2'],
             menuMode: 'context',
             menuItems: [{ text: 'action' }]
@@ -1519,7 +1507,7 @@ QUnit.module('options changed', moduleSetup, () => {
 
     QUnit.test('useInkRipple can be changed to false', function(assert) {
         const clock = sinon.useFakeTimers();
-        const $list = $('#templated-list').dxList({
+        const $list = get('#templated-list').dxList({
             items: ['0'],
             useInkRipple: true
         });
@@ -1540,7 +1528,7 @@ QUnit.module('options changed', moduleSetup, () => {
 
     QUnit.test('useInkRipple can be changed to true', function(assert) {
         const clock = sinon.useFakeTimers();
-        const $list = $('#templated-list').dxList({
+        const $list = get('#templated-list').dxList({
             items: ['0'],
             useInkRipple: false
         });
@@ -1561,7 +1549,7 @@ QUnit.module('options changed', moduleSetup, () => {
 
     QUnit.test('useInkRipple can be changed to false and then back to true at runtime', function(assert) {
         const clock = sinon.useFakeTimers();
-        const $list = $('#templated-list').dxList({
+        const $list = get('#templated-list').dxList({
             items: ['0'],
             useInkRipple: true
         });
@@ -1585,7 +1573,7 @@ QUnit.module('options changed', moduleSetup, () => {
         const groupTemplate = (data) => {
             return $('<div>').addClass('test-class').text(data.key);
         };
-        const $list = $('#list').dxList({
+        const $list = get('#list').dxList({
             dataSource: {
                 store: [
                     { key: 'a', items: ['0', '1', '2'] },
@@ -1609,7 +1597,7 @@ QUnit.module('options changed', moduleSetup, () => {
     });
 
     QUnit.test('allowItemDeleting option changed from true to false', function(assert) {
-        const $list = $('#list').dxList({
+        const $list = get('#list').dxList({
             items: [1, 2, 3, 4],
             allowItemDeleting: true,
             focusStateEnabled: true
@@ -1624,7 +1612,7 @@ QUnit.module('options changed', moduleSetup, () => {
     });
 
     QUnit.test('allowItemDeleting option changed from false to true', function(assert) {
-        const $list = $('#list').dxList({
+        const $list = get('#list').dxList({
             items: [1, 2, 3, 4],
             allowItemDeleting: false,
             focusStateEnabled: true
@@ -1640,7 +1628,7 @@ QUnit.module('options changed', moduleSetup, () => {
     });
 
     QUnit.test('allowItemDeleting option changed twice', function(assert) {
-        const $list = $('#list').dxList({
+        const $list = get('#list').dxList({
             items: [1, 2, 3, 4],
             allowItemDeleting: false,
             focusStateEnabled: true
@@ -1657,7 +1645,7 @@ QUnit.module('options changed', moduleSetup, () => {
     });
 
     QUnit.test('itemDragging option changed from allowReordering true to false', function(assert) {
-        const $list = $('#templated-list').dxList({
+        const $list = get('#templated-list').dxList({
             items: ['0'],
             itemDragging: { allowReordering: true }
         });
@@ -1670,7 +1658,7 @@ QUnit.module('options changed', moduleSetup, () => {
     });
 
     QUnit.test('itemDragging option changed from allowReordering false to true', function(assert) {
-        const $list = $('#templated-list').dxList({
+        const $list = get('#templated-list').dxList({
             items: ['0'],
             itemDragging: { allowReordering: true }
         });
@@ -1683,7 +1671,7 @@ QUnit.module('options changed', moduleSetup, () => {
     });
 
     QUnit.test('itemDragging option changed from allowReordering twice', function(assert) {
-        const $list = $('#templated-list').dxList({
+        const $list = get('#templated-list').dxList({
             items: ['0']
         });
         const list = $list.dxList('instance');
@@ -1696,7 +1684,7 @@ QUnit.module('options changed', moduleSetup, () => {
     });
 
     QUnit.test('showChevronExpr can be changed', function(assert) {
-        const list = $('#templated-list').dxList({
+        const list = get('#templated-list').dxList({
             items: [{ showChevron: false, showChevron1: true }]
         }).dxList('instance');
 
@@ -1707,7 +1695,7 @@ QUnit.module('options changed', moduleSetup, () => {
     });
 
     QUnit.test('showChevronExpr can be changed twice', function(assert) {
-        const list = $('#templated-list').dxList({
+        const list = get('#templated-list').dxList({
             items: [{ showChevron1: true, showChevron2: false }],
         }).dxList('instance');
 
@@ -1720,7 +1708,7 @@ QUnit.module('options changed', moduleSetup, () => {
     });
 
     QUnit.test('badgeExpr can be changed', function(assert) {
-        const list = $('#templated-list').dxList({
+        const list = get('#templated-list').dxList({
             items: [{ badge: null, badge1: true }]
         }).dxList('instance');
 
@@ -1731,7 +1719,7 @@ QUnit.module('options changed', moduleSetup, () => {
     });
 
     QUnit.test('badgeExpr can be changed twice', function(assert) {
-        const list = $('#templated-list').dxList({
+        const list = get('#templated-list').dxList({
             items: [{ badge: null, badge1: true, badge2: false }]
         }).dxList('instance');
 
@@ -1748,7 +1736,7 @@ QUnit.module('selection', moduleSetup, () => {
         const clock = sinon.useFakeTimers();
         const done = assert.async();
 
-        $('#list').dxList({
+        get('#list').dxList({
             selectionMode: 'single',
             onSelectionChanged: (e) => {
                 assert.deepEqual(e.addedItems, ['Item5']);
@@ -1898,7 +1886,7 @@ QUnit.module('events', moduleSetup, () => {
     QUnit.test('onContentReady', function(assert) {
         let contentReadyFired = 0;
 
-        const instance = $('#list').dxList({
+        const instance = get('#list').dxList({
             onContentReady() {
                 contentReadyFired++;
             }
@@ -1913,7 +1901,7 @@ QUnit.module('events', moduleSetup, () => {
     QUnit.test('onItemRendered', function(assert) {
         const itemRenderedSpy = sinon.spy();
 
-        const instance = $('#list').dxList({
+        const instance = get('#list').dxList({
             onItemRendered: itemRenderedSpy
         }).dxList('instance');
 
@@ -1924,7 +1912,7 @@ QUnit.module('events', moduleSetup, () => {
     QUnit.test('onItemRendered should have correct itemIndex parameter when data is grouped (T989015)', function(assert) {
         const itemRenderedStub = sinon.stub();
 
-        $('#list').dxList({
+        get('#list').dxList({
             dataSource: [{
                 key: 'a',
                 items: ['1']
@@ -1940,7 +1928,7 @@ QUnit.module('events', moduleSetup, () => {
     QUnit.test('itemRendered event', function(assert) {
         const itemRenderedSpy = sinon.spy();
 
-        const instance = $('#list').dxList({}).dxList('instance');
+        const instance = get('#list').dxList({}).dxList('instance');
 
         instance.on('itemRendered', itemRenderedSpy);
 
@@ -1959,7 +1947,7 @@ QUnit.module('events', moduleSetup, () => {
         let groupRendered = 0;
         let eventData = [];
 
-        const $list = $('#list').dxList({
+        const $list = get('#list').dxList({
             items,
             grouped: true,
             onGroupRendered(args) {
@@ -1983,7 +1971,7 @@ QUnit.module('events', moduleSetup, () => {
             }
         ];
         const groupRenderedSpy = sinon.spy();
-        const $list = $('#list').dxList({
+        const $list = get('#list').dxList({
             items
         });
         const list = $list.dxList('instance');
@@ -2000,7 +1988,7 @@ QUnit.module('events', moduleSetup, () => {
     });
 
     QUnit.test('list should prevent default behavior when context menu event is firing', function(assert) {
-        const $list = $('#list').dxList({
+        const $list = get('#list').dxList({
             items: [{ text: 'test' }],
             menuMode: 'context',
             menuItems: [{ text: 'action', action: noop }]
@@ -2021,7 +2009,7 @@ QUnit.module('dataSource integration', moduleSetup, () => {
             _containerHeight: 600
         }));
 
-        const $list = $('#list').dxList({
+        const $list = get('#list').dxList({
             dataSource: {
                 load(option) {
                     const deferred = $.Deferred();
@@ -2084,7 +2072,7 @@ QUnit.module('dataSource integration', moduleSetup, () => {
     QUnit.test('list shouldn\'t load dataSource again after first request fail (B253304)', function(assert) {
         let loadCalled = 0;
 
-        $('#list').dxList({
+        get('#list').dxList({
             dataSource: {
                 load() {
                     loadCalled++;
@@ -2957,7 +2945,7 @@ QUnit.module('scrollView integration', {
     }
 }, () => {
     QUnit.test('on repaint scroll should be moved to top', function(assert) {
-        const $list = $('#list');
+        const $list = get('#list');
         $list.height(100);
         $list.dxList({
             items: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0],
@@ -2973,7 +2961,7 @@ QUnit.module('scrollView integration', {
         this.clock.restore();
         const done = assert.async();
 
-        const $list = $('#list');
+        const $list = get('#list');
         $list.height(100);
 
         $list.dxList({
@@ -2993,7 +2981,7 @@ QUnit.module('scrollView integration', {
     });
 
     QUnit.test('update scroll after change items', function(assert) {
-        const $list = $('#list')
+        const $list = get('#list')
             .dxList({
                 height: 50,
                 items: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0],
@@ -3017,7 +3005,7 @@ QUnit.module('scrollView integration', {
 
         const listHeight = 60;
 
-        const $list = $('#list').height(listHeight).dxList({
+        const $list = get('#list').height(listHeight).dxList({
             dataSource,
             pageLoadMode: 'scrollBottom'
         });
@@ -3044,7 +3032,7 @@ QUnit.module('scrollView integration', {
 
         const listHeight = 60;
 
-        const $list = $('#list').height(listHeight).dxList({
+        const $list = get('#list').height(listHeight).dxList({
             dataSource,
             pageLoadMode: 'scrollBottom'
         });
@@ -3056,7 +3044,7 @@ QUnit.module('scrollView integration', {
     });
 
     QUnit.test('list should try to load next page if scrollView is not full after dimensions updated', function(assert) {
-        const $element = $('#list').dxList({
+        const $element = get('#list').dxList({
             pageLoadMode: 'scrollBottom',
             height: 300,
             scrollingEnabled: true,
@@ -3095,7 +3083,7 @@ QUnit.module('scrollView integration', {
 
     QUnit.test('onScroll', function(assert) {
         const scrollActionSpy = sinon.spy();
-        const list = $('#list').dxList({
+        const list = get('#list').dxList({
             height: 100,
             useNativeScrolling: false,
             dataSource: [1, 2, 3, 4, 5, 6],
@@ -3108,7 +3096,7 @@ QUnit.module('scrollView integration', {
 
     QUnit.test('scroll event', function(assert) {
         const scrollActionSpy = sinon.spy();
-        const list = $('#list').dxList({
+        const list = get('#list').dxList({
             height: 100,
             useNativeScrolling: false,
             dataSource: [1, 2, 3, 4, 5, 6]
@@ -3121,7 +3109,7 @@ QUnit.module('scrollView integration', {
     });
 
     QUnit.test('list should be scrolled to item from bottom by scrollToItem', function(assert) {
-        const $list = $('#list').dxList({
+        const $list = get('#list').dxList({
             items: ['0']
         });
 
@@ -3137,7 +3125,7 @@ QUnit.module('scrollView integration', {
     });
 
     QUnit.test('it should be possible to scroll to an item by denormalized index', function(assert) {
-        const $list = $('#list').dxList({
+        const $list = get('#list').dxList({
             dataSource: new DataSource({
                 store: [{ group: 'Group 1', text: 'Item 1', id: 1 }, { group: 'Group 2', text: 'Item 2', id: 2 }],
                 key: 'id',
@@ -3155,7 +3143,7 @@ QUnit.module('scrollView integration', {
     });
 
     QUnit.test('list shouldn\'t be scrolled if item isn\'t specified', function(assert) {
-        const $list = $('#list').dxList({
+        const $list = get('#list').dxList({
             items: ['0']
         });
 
@@ -3171,7 +3159,7 @@ QUnit.module('scrollView integration', {
     QUnit.test('list should not fail on scrollToItem if item is a string of the specific format (T381823)', function(assert) {
         const items = ['12', '1.6', '#43'];
 
-        const list = $('#list').dxList({
+        const list = get('#list').dxList({
             items,
             height: 10
         }).dxList('instance');
@@ -3183,7 +3171,7 @@ QUnit.module('scrollView integration', {
     QUnit.test('pulldown to refresh should work when option items is set', function(assert) {
         assert.expect(0);
 
-        const $list = $('#list').dxList({
+        const $list = get('#list').dxList({
             items: [1, 2, 3],
             pullRefreshEnabled: true
         });
@@ -3196,7 +3184,7 @@ QUnit.module('scrollView integration', {
     });
 
     QUnit.test('updating scrollView options should release scroll', function(assert) {
-        const $list = $('#list').height(1000).dxList({
+        const $list = get('#list').height(1000).dxList({
             items: [1, 2, 3],
             pullRefreshEnabled: false
         });
@@ -3209,7 +3197,7 @@ QUnit.module('scrollView integration', {
     });
 
     QUnit.test('scroll position should be saved after selectionMode option changing', function(assert) {
-        const $list = $('#list').height(1000).dxList({
+        const $list = get('#list').height(1000).dxList({
             items: [1, 2, 3, 4],
             selectionMode: 'none',
             height: 10
@@ -3236,7 +3224,7 @@ QUnit.module('scrollView integration', {
         QUnit.test(`${optionInfo.listOption} bool option changed to true`, function(assert) {
             const startConfig = {};
             startConfig[optionInfo.listOption] = false;
-            const $list = $('#list').dxList(startConfig);
+            const $list = get('#list').dxList(startConfig);
             const list = $list.dxList('instance');
             const scrollView = $list.dxScrollView('instance');
 
@@ -3248,7 +3236,7 @@ QUnit.module('scrollView integration', {
         QUnit.test(`${optionInfo.listOption} bool option changed to false`, function(assert) {
             const startConfig = {};
             startConfig[optionInfo.listOption] = true;
-            const $list = $('#list').dxList(startConfig);
+            const $list = get('#list').dxList(startConfig);
             const list = $list.dxList('instance');
             const scrollView = $list.dxScrollView('instance');
 
@@ -3267,7 +3255,7 @@ QUnit.module('scrollView integration', {
         QUnit.test(`${optionInfo.listOption} option changed`, function(assert) {
             const startConfig = {};
             startConfig[optionInfo.listOption] = 'custom text';
-            const $list = $('#list').dxList(startConfig);
+            const $list = get('#list').dxList(startConfig);
             const list = $list.dxList('instance');
             const scrollView = $list.dxScrollView('instance');
 
@@ -3280,7 +3268,7 @@ QUnit.module('scrollView integration', {
     QUnit.test('List should not call "get" in item model when scrolling to item (T996102)', function(assert) {
         const getCallSpy = sinon.spy();
         const items = [{ get: getCallSpy }];
-        const instance = $('#list').dxList({
+        const instance = get('#list').dxList({
             items: items
         }).dxList('instance');
 
@@ -3295,11 +3283,11 @@ QUnit.module('scrollView integration', {
         });
 
         const listHeight = 60;
-        const $container = $('#list')
+        const $container = get('#list')
             .wrap('<div>')
             .parent()
             .height(listHeight);
-        const $list = $('#list').dxList({
+        const $list = get('#list').dxList({
             height: '100%',
             dataSource,
             pageLoadMode: 'scrollBottom'
@@ -3324,11 +3312,11 @@ QUnit.module('scrollView integration', {
         });
 
         const listHeight = 60;
-        const $container = $('#list')
+        const $container = get('#list')
             .wrap('<div>')
             .parent()
             .height(listHeight);
-        const $list = $('#list').dxList({
+        const $list = get('#list').dxList({
             height: '100%',
             dataSource,
             pageLoadMode: 'scrollBottom'
@@ -3462,13 +3450,13 @@ QUnit.module('regressions', moduleSetup, () => {
 
 QUnit.module('widget sizing render', {}, () => {
     QUnit.test('default', function(assert) {
-        const $element = $('#list').dxList({ items: [1, 2, 3, 4] });
+        const $element = get('#list').dxList({ items: [1, 2, 3, 4] });
 
         assert.ok($element.outerWidth() > 0, 'outer width of the element must be more than zero');
     });
 
     QUnit.test('change width', function(assert) {
-        const $element = $('#list').dxList({ items: [1, 2, 3, 4] });
+        const $element = get('#list').dxList({ items: [1, 2, 3, 4] });
         const instance = $element.dxList('instance');
         const customWidth = 400;
 
@@ -3489,7 +3477,7 @@ QUnit.module('keyboard navigation', {
     QUnit.test('list scroll to focused item after press up/down arrows', function(assert) {
         assert.expect(2);
 
-        const $element = $('#list').dxList({
+        const $element = get('#list').dxList({
             focusStateEnabled: true,
             items: [0, 1, 2, 3, 4]
         });
@@ -3519,7 +3507,7 @@ QUnit.module('keyboard navigation', {
         }
         assert.expect(3);
 
-        const $element = $('#list').dxList({
+        const $element = get('#list').dxList({
             showSelectionControls: true,
             selectionMode: 'all',
             focusStateEnabled: true,
@@ -3553,7 +3541,7 @@ QUnit.module('keyboard navigation', {
         }
         assert.expect(6);
 
-        const $element = $('#list').dxList({
+        const $element = get('#list').dxList({
             showSelectionControls: true,
             selectionMode: 'all',
             focusStateEnabled: true,
@@ -3590,7 +3578,7 @@ QUnit.module('keyboard navigation', {
 
     QUnit.test('Select all when disabled item is null (T832581)', function(assert) {
         try {
-            const instance = $('#list').dxList({
+            const instance = get('#list').dxList({
                 dataSource: [null, undefined],
                 searchEnabled: true,
                 selectionMode: 'all',
@@ -3609,7 +3597,7 @@ QUnit.module('keyboard navigation', {
     QUnit.test('list does not scroll to item after click on it', function(assert) {
         assert.expect(2);
 
-        const $element = $('#list').dxList({
+        const $element = get('#list').dxList({
             focusStateEnabled: true,
             items: [0, 1, 2, 3, 4]
         });
@@ -3630,7 +3618,7 @@ QUnit.module('keyboard navigation', {
     QUnit.test('list scroll to focused item after press home/end', function(assert) {
         assert.expect(2);
 
-        const $element = $('#list').dxList({
+        const $element = get('#list').dxList({
             focusStateEnabled: true,
             items: [0, 1, 2, 3, 4]
         });
@@ -3653,7 +3641,7 @@ QUnit.module('keyboard navigation', {
     QUnit.test('list scroll to focused item after press pageDown', function(assert) {
         assert.expect(7);
 
-        const $element = $('#list').dxList({
+        const $element = get('#list').dxList({
             focusStateEnabled: true,
             items: [0, 1, 2, 3, 4, 5]
         });
@@ -3687,7 +3675,7 @@ QUnit.module('keyboard navigation', {
     QUnit.test('list scroll to hidden focused item after press pageDown', function(assert) {
         assert.expect(3);
 
-        const $element = $('#list').dxList({
+        const $element = get('#list').dxList({
             focusStateEnabled: true,
             items: [0, 1, 2, 3, 4, 5, 6]
         });
@@ -3714,7 +3702,7 @@ QUnit.module('keyboard navigation', {
     QUnit.test('list scroll to focused item after press pageUp', function(assert) {
         assert.expect(6);
 
-        const $element = $('#list').dxList({
+        const $element = get('#list').dxList({
             focusStateEnabled: true,
             items: [0, 1, 2, 3, 4, 5]
         });
@@ -3749,7 +3737,7 @@ QUnit.module('keyboard navigation', {
     QUnit.test('list scroll to hidden focused item after press pageUp', function(assert) {
         assert.expect(3);
 
-        const $element = $('#list').dxList({
+        const $element = get('#list').dxList({
             focusStateEnabled: true,
             items: [0, 1, 2, 3, 4, 5, 6]
         });
@@ -3775,7 +3763,7 @@ QUnit.module('keyboard navigation', {
 
     QUnit.test('list should attach keyboard events even if focusStateEnabled is false when the widget\'s onKeyboardHandled is defined', function(assert) {
         const handler = sinon.stub();
-        const $element = $('#list');
+        const $element = get('#list');
 
         const instance = $element.dxList({
             focusStateEnabled: false,
@@ -3795,7 +3783,7 @@ QUnit.module('keyboard navigation', {
 
 QUnit.module('Search', () => {
     QUnit.test('Render search editor', function(assert) {
-        const $element = $('#list').dxList({
+        const $element = get('#list').dxList({
             dataSource: [1, 2, 3],
             searchEnabled: true,
             searchValue: '3'
@@ -3808,7 +3796,7 @@ QUnit.module('Search', () => {
     });
 
     QUnit.test('Search', function(assert) {
-        const $element = $('#list').dxList({
+        const $element = get('#list').dxList({
             dataSource: [1, 2, 3],
             searchEnabled: true,
             searchExpr: 'this'
@@ -3824,7 +3812,7 @@ QUnit.module('Search', () => {
     });
 
     QUnit.testInActiveWindow('Focusing widget when there is search editor', function(assert) {
-        const $element = $('#list').dxList({
+        const $element = get('#list').dxList({
             dataSource: [1, 2, 3],
             searchEnabled: true,
             searchExpr: 'this'
@@ -3838,7 +3826,7 @@ QUnit.module('Search', () => {
     });
 
     QUnit.test('Show warning when dataSource is not specified', function(assert) {
-        const instance = $('#list').dxList({
+        const instance = get('#list').dxList({
             items: [1, 2, 3],
             searchEnabled: true,
             searchExpr: 'this'
@@ -3857,7 +3845,7 @@ QUnit.module('Search', () => {
     });
 
     QUnit.test('Search when searchMode is specified', function(assert) {
-        const $element = $('#list').dxList({
+        const $element = get('#list').dxList({
             dataSource: [1, 12, 23],
             searchEnabled: true,
             searchExpr: 'this',
@@ -3875,7 +3863,7 @@ QUnit.module('Search', () => {
     });
 
     QUnit.test('Search in items of grouped dataSource', function(assert) {
-        const $element = $('#list').dxList({
+        const $element = get('#list').dxList({
             dataSource: [{ key: 'a', items: [{ name: '1' }] }, { key: 'b', items: [{ name: '2' }] }],
             grouped: true,
             searchEnabled: true,
@@ -3893,7 +3881,7 @@ QUnit.module('Search', () => {
     });
 
     QUnit.test('Search in items of grouped dataSource with simple items', function(assert) {
-        const $element = $('#list').dxList({
+        const $element = get('#list').dxList({
             dataSource: [{ key: 'a', items: ['1', '2'] }],
             grouped: true,
             searchEnabled: true
@@ -3913,7 +3901,7 @@ QUnit.module('Search', () => {
 
     // T582179
     QUnit.test('Selection should not be cleared after searching', function(assert) {
-        const $element = $('#list').dxList({
+        const $element = get('#list').dxList({
             dataSource: [1, 2, 3],
             searchEnabled: true,
             searchExpr: 'this',
@@ -3935,7 +3923,7 @@ QUnit.module('Search', () => {
     QUnit.test('Delayed search value should be applied on the widget reset', function(assert) {
         const clock = sinon.useFakeTimers();
 
-        const $element = $('#list').dxList({
+        const $element = get('#list').dxList({
             dataSource: [1, 2, 3],
             searchEnabled: true,
             searchExpr: 'this',
@@ -4032,31 +4020,22 @@ if(devices.real().deviceType === 'desktop') {
     });
 }
 
-if(QUnit.urlParams['nojquery']) {
+if(QUnit.urlParams['nojquery'] && QUnit.urlParams['shadowDom']) {
     QUnit.module('ShadowDOM', {
         beforeEach: function() {
             this.clock = sinon.useFakeTimers();
 
-            this.root = document.querySelector('#list');
-            this.container = document.createElement('div');
-            this.list = document.createElement('div');
-
-            this.root.attachShadow({ mode: 'open' });
-            this.container.appendChild(this.list);
-            this.root.shadowRoot.appendChild(this.container);
-
-            this.$list = $(this.list).dxList({
+            this.$list = get('#list').dxList({
                 items: ['One', 'Two', 'Three'],
                 itemDragging: { allowReordering: true },
                 focusStateEnabled: true,
             });
+
+            this.root = get('#list')[0].getRootNode();
         },
 
         afterEach: function() {
             this.clock.restore();
-
-            // TODO: get rid of it after fix jquery event bubbling to shadow dom
-            $(this.container).empty();
         },
 
         getItems: function() {

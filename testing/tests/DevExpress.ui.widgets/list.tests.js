@@ -1,5 +1,4 @@
 import $ from 'jquery';
-
 import 'generic_light.css!';
 
 QUnit.testStart(() => {
@@ -29,7 +28,19 @@ QUnit.testStart(() => {
             <div data-options="dxTemplate: { name: \'item\' }">Item Template</div>\
         </div>';
 
-    $('#qunit-fixture').html(markup);
+    let container = document.querySelector('#qunit-fixture');
+
+    if(QUnit.urlParams['shadowDom'] && QUnit.urlParams['nojquery']) {
+        const root = document.querySelector('#qunit-fixture');
+
+        root.attachShadow({ mode: 'open' });
+
+        container = document.createElement('div');
+
+        root.shadowRoot.appendChild(container);
+    }
+
+    $(container).html(markup);
 });
 
 import './listParts/commonTests.js';
@@ -37,3 +48,4 @@ import './listParts/editingTests.js';
 import './listParts/editingUITests.js';
 import './listParts/dataSourceFromUrlTests.js';
 import './listParts/liveUpdateTests.js';
+
