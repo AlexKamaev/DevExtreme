@@ -1248,7 +1248,7 @@ QUnit.test('Update layout inside a tab (T1040296)', function(assert) {
         { title: 'Window' }
     ]);
 
-    assert.deepEqual([...document.querySelectorAll('.dx-tab-text')].map(e => e.textContent), ['General', 'Window'], 'dx-tab-text elements');
+    assert.deepEqual($('.dx-tab-text').map((i, e) => e.textContent).get(), ['General', 'Window'], 'dx-tab-text elements');
 });
 
 QUnit.module('Align labels', {
