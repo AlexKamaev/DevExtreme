@@ -2,7 +2,7 @@ import $ from '../../core/renderer';
 import domAdapter from '../../core/dom_adapter';
 import eventsEngine from '../../events/core/events_engine';
 import { isDefined, isString } from '../../core/utils/type';
-import { isElementInDom } from '../../core/utils/shadow_dom';
+import { isElementInDom } from '../../core/utils/dom';
 import { name as clickEventName } from '../../events/click';
 import pointerEvents from '../../events/pointer';
 import { addNamespace } from '../../events/utils/index';

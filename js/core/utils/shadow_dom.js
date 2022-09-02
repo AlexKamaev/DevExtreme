@@ -1,6 +1,3 @@
-import $ from '../../core/renderer';
-import { getWindow } from './window';
-
 const DX_RULE_PREFIX = 'dx-';
 
 let ownerDocumentStyleSheet = null;
@@ -123,12 +120,4 @@ export function getShadowElementsFromPoint(x, y, root) {
     result.pop();
 
     return result;
-}
-
-export function isElementInDom($element) {
-    const element = $element.get(0);
-    const shadowHost = element.getRootNode().host;
-    const elementOrShadowHost = shadowHost || element;
-
-    return !!$(elementOrShadowHost).closest(getWindow().document).length;
 }

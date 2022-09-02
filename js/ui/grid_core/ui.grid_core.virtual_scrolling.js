@@ -8,7 +8,7 @@ import { when, Deferred } from '../../core/utils/deferred';
 import LoadIndicator from '../load_indicator';
 import browser from '../../core/utils/browser';
 import { getBoundingRect } from '../../core/utils/position';
-import { isElementInDom } from '../../core/utils/shadow_dom';
+import { isElementInDom } from '../../core/utils/dom';
 import { isDefined } from '../../core/utils/type';
 
 const BOTTOM_LOAD_PANEL_CLASS = 'bottom-load-panel';

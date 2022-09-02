@@ -9,7 +9,7 @@ import devices from '../../core/devices';
 import Form from '../form';
 import { Deferred } from '../../core/utils/deferred';
 import { equalByValue } from '../../core/utils/common';
-import { isElementInDom } from '../../core/utils/shadow_dom';
+import { isElementInDom } from '../../core/utils/dom';
 import Scrollable from '../scroll_view/ui.scrollable';
 import Popup from '../popup/ui.popup';
 import {

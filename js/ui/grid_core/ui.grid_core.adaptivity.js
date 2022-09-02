@@ -13,7 +13,7 @@ import { equalByValue } from '../../core/utils/common';
 import { each } from '../../core/utils/iterator';
 import { extend } from '../../core/utils/extend';
 import { Deferred, when } from '../../core/utils/deferred';
-import { isElementInDom } from '../../core/utils/shadow_dom';
+import { isElementInDom } from '../../core/utils/dom';
 import messageLocalization from '../../localization/message';
 
 const COLUMN_HEADERS_VIEW = 'columnHeadersView';
