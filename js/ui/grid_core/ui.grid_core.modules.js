@@ -7,6 +7,7 @@ import { each } from '../../core/utils/iterator';
 import errors from '../widget/ui.errors';
 import messageLocalization from '../../localization/message';
 import { hasWindow } from '../../core/utils/window';
+import { addShadowDomStyles } from '../../core/utils/shadow_dom';
 
 const WIDGET_WITH_LEGACY_CONTAINER_NAME = 'dxDataGrid';
 
@@ -267,6 +268,8 @@ const View = ModuleItem.inherit({
             this.component._optionCache = undefined;
             this.renderCompleted.fire(options);
         }
+
+        addShadowDomStyles($element);
     },
 
     resize: function() {

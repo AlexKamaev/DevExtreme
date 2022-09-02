@@ -1918,7 +1918,7 @@ const EditingController = modules.ViewController.inherit((function() {
             const deferred = new Deferred();
             this.addDeferred(deferred);
             setTimeout(() => {
-                const $focusedElement = $(domAdapter.getActiveElement());
+                const $focusedElement = $(domAdapter.getActiveElement(this._editForm?.element() || this.component.$element().get(0)));
                 const columnIndex = this._rowsView.getCellIndex($focusedElement, row.rowIndex);
                 let focusedElement = $focusedElement.get(0);
                 const selectionRange = gridCoreUtils.getSelectionRange(focusedElement);
@@ -1930,7 +1930,7 @@ const EditingController = modules.ViewController.inherit((function() {
                     const $focusedItem = this._rowsView._getCellElement(row.rowIndex, columnIndex);
                     this._delayedInputFocus($focusedItem, () => {
                         setTimeout(() => {
-                            focusedElement = domAdapter.getActiveElement();
+                            focusedElement = domAdapter.getActiveElement(this.component.$element()?.get(0));
                             if(selectionRange.selectionStart >= 0) {
                                 gridCoreUtils.setSelectionRange(focusedElement, selectionRange);
                             }

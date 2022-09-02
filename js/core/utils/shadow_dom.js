@@ -1,3 +1,6 @@
+import $ from '../../core/renderer';
+import { getWindow } from './window';
+
 const DX_RULE_PREFIX = 'dx-';
 
 let ownerDocumentStyleSheet = null;
@@ -45,9 +48,9 @@ function insertRule(targetStyleSheet, rule, needApplyAllStyles) {
 
 export function addShadowDomStyles($element) {
     const el = $element.get(0);
-    const root = el.getRootNode();
+    const root = el.getRootNode?.();
 
-    if(!root.host) {
+    if(!root?.host) {
         return;
     }
 
@@ -120,4 +123,12 @@ export function getShadowElementsFromPoint(x, y, root) {
     result.pop();
 
     return result;
+}
+
+export function isElementInDom($element) {
+    const element = $element.get(0);
+    const shadowHost = element.getRootNode().host;
+    const elementOrShadowHost = shadowHost || element;
+
+    return !!$(elementOrShadowHost).closest(getWindow().document).length;
 }

@@ -1039,7 +1039,7 @@ QUnit.module('Initialization', baseModuleConfig, () => {
         const toolbarItemOffset = $(dataGrid.$element()).find('.dx-toolbar .dx-button').offset().top;
 
         // assert
-        assert.equal(toolbarItemOffset, $(dataGrid.$element()).find('.dx-datagrid-search-panel').offset().top, 'toolbar sarch panel is aligned');
+        assert.equal(toolbarItemOffset, $(dataGrid.$element()).find('.dx-datagrid-search-panel').offset().top, 'toolbar search panel is aligned');
         assert.roughEqual(toolbarItemOffset, $(dataGrid.$element()).find('.dx-toolbar .dx-datebox').offset().top, 0.51, 'toolbar custom item is aligned');
     });
 
@@ -4213,7 +4213,7 @@ QUnit.module('templates', baseModuleConfig, () => {
         const container = $('<div />');
 
         // act
-        (DataGrid.IS_RENOVATED_WIDGET ? dataGrid.getComponentInstance() : dataGrid)._getTemplate('#scriptTestTemplate2').render({ container: container });
+        (DataGrid.IS_RENOVATED_WIDGET ? dataGrid.getComponentInstance() : dataGrid)._getTemplate($('#scriptTestTemplate2')).render({ container: container });
 
         // assert
         assert.equal(container.html().trim().toLowerCase(), '<span>Template2</span>'.toLowerCase());
@@ -4240,7 +4240,7 @@ QUnit.module('templates', baseModuleConfig, () => {
         // arrange, act
         const dataGrid = createDataGrid({
             dataSource: [{ column1: 'test1', column2: 'test2' }],
-            columns: [{ dataField: 'column1', cellTemplate: document.getElementById('scriptTestTemplate1') }, { dataField: 'column2', cellTemplate: document.getElementById('scriptTestTemplate2') }]
+            columns: [{ dataField: 'column1', cellTemplate: $('#scriptTestTemplate1').get(0) }, { dataField: 'column2', cellTemplate: $('#scriptTestTemplate2').get(0) }]
         });
 
         this.clock.tick();
@@ -4440,7 +4440,11 @@ QUnit.module('templates', baseModuleConfig, () => {
         $('#dataGrid').dxDataGrid({
             rowTemplate: function(rowElement) {
                 assert.equal(typeUtils.isRenderer(rowElement), !!config().useJQuery, 'rowElement is correct');
-                assert.ok($(rowElement).closest(document).length, 'rowElement is attached to DOM');
+
+                const shadowHost = rowElement.getRootNode && rowElement.getRootNode().host;
+                const shadowHostOrDocument = shadowHost || document;
+
+                assert.ok($(rowElement).closest(shadowHostOrDocument).length, 'rowElement is attached to DOM');
             },
             dataSource: [{ column1: 'test1', column2: 'test2' }],
             columns: [{ dataField: 'column1' }, { dataField: 'column2' }]
@@ -4457,8 +4461,12 @@ QUnit.module('templates', baseModuleConfig, () => {
             dataRowTemplate: function(rowElement) {
                 assert.equal(typeUtils.isRenderer(rowElement), !!config().useJQuery, 'rowElement is correct');
                 assert.equal($(rowElement)[0].tagName.toLowerCase(), 'tbody', 'rowElement tagName is tbody');
+
+                const shadowHost = rowElement.getRootNode && rowElement.getRootNode().host;
+                const shadowHostOrDocument = shadowHost || document;
+
                 // T1054609
-                assert.ok($(rowElement).closest(document).length, 'rowElement is attached to DOM');
+                assert.ok($(rowElement).closest(shadowHostOrDocument).length, 'rowElement is attached to DOM');
             },
             dataSource: [{ column1: 'test1', column2: 'test2' }],
             columns: [{ dataField: 'column1' }, { dataField: 'column2' }]
