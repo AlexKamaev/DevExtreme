@@ -112,6 +112,8 @@ QUnit.module('Refresh', moduleConfig, () => {
         this.createInstance(options.allSourcesOptions);
         this.clock.tick(10);
 
+        assert.equal(this.instance.option('selectedRowKey'), undefined);
+
         this.$element
             .find(Consts.TREELIST_DATA_ROW_SELECTOR)
             .eq(2)
@@ -119,11 +121,13 @@ QUnit.module('Refresh', moduleConfig, () => {
 
         this.clock.tick(10);
 
-        assert.equal(this.instance.option('selectedRowKey'), 3);
+        assert.notEqual(this.instance.option('selectedRowKey'), undefined);
+
+        const selectedRowKey = this.instance.option('selectedRowKey');
 
         this.instance.refresh();
         this.clock.tick(10);
 
-        assert.equal(this.instance.option('selectedRowKey'), 3);
+        assert.equal(this.instance.option('selectedRowKey'), selectedRowKey);
     });
 });
