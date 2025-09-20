@@ -228,22 +228,12 @@ class TaskEditDialogInfo extends DialogInfoBase {
                         text: '...',
                         hint: messageLocalization.format('dxGantt-dialogEditResourceListHint'),
                         onClick: () => {
+                            const formData = this.getFormData();
+
                             const showTaskEditDialogCallback = () => {
                                 this._parameters.showTaskEditDialogCommand.execute();
 
-                                const newForm = this._owner._dialogInfo._form;
-
-                                const titleEdit = newForm.getEditor('title');
-                                const assignedEdit = newForm.getEditor('assigned.items');
-                                const startEdit = newForm.getEditor('start');
-                                const endEdit = newForm.getEditor('end');
-                                const progressEdit = newForm.getEditor('progress');
-
-                                titleEdit.option('value', formData.title);
-                                assignedEdit.option('value', formData.assigned.items);
-                                startEdit.option('value', formData.start);
-                                endEdit.option('value', formData.end);
-                                progressEdit.option('value', formData.progress);
+                                this._restoreFormData(formData);
                             };
 
                             this._parameters.showResourcesDialogCommand.execute(showTaskEditDialogCallback);
@@ -252,6 +242,21 @@ class TaskEditDialogInfo extends DialogInfoBase {
                 }]
             }
         }];
+    }
+    _restoreFormData(formData) {
+        const newForm = this._owner._dialogInfo._form;
+
+        const titleEdit = newForm.getEditor('title');
+        const assignedEdit = newForm.getEditor('assigned.items');
+        const startEdit = newForm.getEditor('start');
+        const endEdit = newForm.getEditor('end');
+        const progressEdit = newForm.getEditor('progress');
+
+        titleEdit.option('value', formData.title);
+        assignedEdit.option('value', formData.assigned.items);
+        startEdit.option('value', formData.start);
+        endEdit.option('value', formData.end);
+        progressEdit.option('value', formData.progress);
     }
     _getValidationMessage(isStartDependencies, correctDate) {
         if(isStartDependencies) {
