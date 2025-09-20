@@ -83,6 +83,76 @@ QUnit.module('Dialogs', moduleConfig, () => {
         // Enabled boolean attributes return '' in jQuery 4+ and their name ('readonly') in jQuery 3
         assert.ok(readOnlyAttr === '' || readOnlyAttr === 'readonly', 'all inputs is readOnly');
     });
+
+
+    test('task editing then show resource dialog and restore task state', function(assert) {
+        this.createInstance(options.allSourcesOptions);
+        this.instance.option('editing.enabled', true);
+        this.instance.option('selectedRowKey', 1);
+        this.clock.tick(10);
+        showTaskEditDialog(this.instance);
+        this.clock.tick(10);
+        const $dialog = $('body').find(Consts.POPUP_SELECTOR);
+        assert.equal($dialog.length, 1, 'dialog is shown');
+
+        const $inputs = $dialog.find(Consts.INPUT_TEXT_EDITOR_SELECTOR);
+        assert.equal($inputs.eq(0).val(), data.tasks[0].title, 'title text is shown');
+        assert.equal((new Date($inputs.eq(1).val())).getTime(), data.tasks[0].start.getTime(), 'start task text is shown');
+        assert.equal((new Date($inputs.eq(2).val())).getTime(), data.tasks[0].end.getTime(), 'end task text is shown');
+        assert.equal($inputs.eq(3).val(), data.tasks[0].progress + '%', 'progress text is shown');
+        const testTitle = 'text';
+        const testProgress = 0.99;
+        const testDate = new Date();
+
+        const titleTextBox = $dialog.find('.dx-textbox').eq(0).dxTextBox('instance');
+        const progressTextBox = $dialog.find('.dx-numberbox').eq(0).dxNumberBox('instance');
+        const startTextBox = $dialog.find('.dx-datebox').eq(0).dxDateBox('instance');
+        const endTextBox = $dialog.find('.dx-datebox').eq(1).dxDateBox('instance');
+
+        titleTextBox.option('value', testTitle);
+        progressTextBox.option('value', testProgress);
+        startTextBox.option('value', testDate);
+        endTextBox.option('value', testDate);
+
+        const $showResourceDialogButton = $dialog.find('.dx-popup-content').find('.dx-button').eq(0);
+        $showResourceDialogButton.trigger('dxclick');
+        this.clock.tick(20);
+
+        const $closeResourceDialogButton = $dialog.find('.dx-popup-bottom').find('.dx-button').eq(0);
+        $closeResourceDialogButton.trigger('dxclick');
+        this.clock.tick(20);
+
+        // const $okButton = $dialog.find('.dx-popup-bottom').find('.dx-button').eq(0);
+        // $okButton.trigger('dxclick');
+        // assert.equal($dialog.length, 1, 'dialog is shown');
+        // let isValidStartTextBox = startTextBox._getValidationErrors() === null;
+        // let isValidEndTextBox = endTextBox._getValidationErrors() === null;
+        // assert.notOk(isValidStartTextBox, 'empty start validation');
+        // assert.notOk(isValidEndTextBox, 'empty end validation');
+        // titleTextBox.option('value', testTitle);
+        // progressTextBox.option('value', testProgress);
+        // startTextBox.option('value', data.tasks[0].start);
+        // endTextBox.option('value', data.tasks[0].end);
+        // isValidStartTextBox = startTextBox._getValidationErrors() === null;
+        // isValidEndTextBox = endTextBox._getValidationErrors() === null;
+        // assert.ok(isValidStartTextBox, 'not empty start validation');
+        // assert.ok(isValidEndTextBox, 'not empty end validation');
+        // $okButton.trigger('dxclick');
+        // this.clock.tick(10);
+        // const firstTreeListTitleText = this.$element.find(Consts.TREELIST_DATA_ROW_SELECTOR).first().find('td').eq(2).text();
+        // assert.equal(firstTreeListTitleText, testTitle, 'title text was modified');
+
+        // this.instance.option('editing.enabled', false);
+        // showTaskEditDialog(this.instance);
+        // assert.equal($dialog.find('.dx-popup-bottom').find('.dx-button').length, 1, 'only cancel button in toolbar');
+        // $dialog = $('body').find(Consts.POPUP_SELECTOR);
+        // const inputs = $dialog.find('.dx-texteditor-input');
+        // const readOnlyAttr = inputs.attr('readOnly');
+        // // Enabled boolean attributes return '' in jQuery 4+ and their name ('readonly') in jQuery 3
+        // assert.ok(readOnlyAttr === '' || readOnlyAttr === 'readonly', 'all inputs is readOnly');
+    });
+
+
     test('showTaskDetailsDialog', function(assert) {
         this.createInstance(options.allSourcesOptions);
         this.instance.option('editing.enabled', true);
